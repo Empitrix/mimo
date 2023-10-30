@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mimo/animation/generator.dart';
 import 'package:mimo/components/square.dart';
 
 class HomePage extends StatefulWidget {
@@ -8,9 +9,29 @@ class HomePage extends StatefulWidget {
 	State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 
-	final int genNum = 4;
+	final int genNum = 3;
+
+	List<GenerateAnimation> animations = [];
+
+
+	Future<void> init() async {
+		// Initialize animations for squares
+		animations = List<GenerateAnimation>.generate(
+			genNum*genNum, (i) => generateLinearAnimation(
+			ticket: this,
+			initialValue: 6,
+			range: {0, 6},
+			durations: [300]
+		));
+	}
+
+	@override
+	void initState() {
+		init();
+		super.initState();
+	}
 
 	@override
 	Widget build(BuildContext context) {
@@ -43,7 +64,11 @@ class _HomePageState extends State<HomePage> {
 									for(int j = 0; j < genNum; j++) Column(
 										mainAxisAlignment: MainAxisAlignment.spaceEvenly,
 										children: [
-											Square(size: 100, text: "[$i, $j]",),
+											Square(
+												size: 100,
+												text: "[${i + 1}, ${j + 1}]",
+												animation: animations[ (i * genNum) + j ]
+											),
 										],
 									)
 								],

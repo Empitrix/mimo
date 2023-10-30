@@ -1,21 +1,72 @@
 import 'package:flutter/material.dart';
+import 'package:glowy_borders/glowy_borders.dart';
+import 'package:mimo/animation/generator.dart';
 
 
 class Square extends StatelessWidget {
 	final double size;
 	final String text;
-	const Square({super.key, this.size = 50, this.text = "",});
+	final GenerateAnimation animation;
+	final Color borderColor;
+	final Color selectColor;
+	const Square({
+		super.key,
+		this.size = 50,
+		this.text = "",
+		required this.animation,
+		this.borderColor = Colors.red,
+		this.selectColor = Colors.red,
+	});
 
 	@override
 	Widget build(BuildContext context) {
-		return Container(
-			height: size, width: size,
-			decoration: BoxDecoration(
-				borderRadius: BorderRadius.circular(8),
-				color: Theme.of(context).colorScheme.secondaryContainer,
-				border: Border.all(width: 2, color: Colors.green.withOpacity(0.8))
+		return SizedBox(
+			width: size,
+			height: size,
+			child: AnimatedGradientBorder(
+				animationTime: 3,
+				borderSize: 2 - animation.animation.value,
+				glowSize: 10 - animation.animation.value,
+				gradientColors: [
+					borderColor,
+					Colors.transparent,
+					Colors.transparent,
+					Colors.transparent,
+					Colors.transparent,
+					borderColor,
+				],
+				animationProgress: null,
+				borderRadius: const BorderRadius.all(Radius.circular(5)),
+				child: AnimatedBuilder(
+					animation: animation.animation,
+					builder: (context, child){
+						return Container(
+							width: size,
+							height: size,
+							margin: EdgeInsets.all(6 - animation.animation.value),
+							decoration: const BoxDecoration(
+								borderRadius: BorderRadius.all(Radius.circular(5))
+							),
+							child: ElevatedButton(
+								style: ButtonStyle(
+									backgroundColor: MaterialStatePropertyAll(
+										animation.controller.value == 1 ?
+										Theme.of(context).colorScheme.secondaryContainer:
+										selectColor
+									),
+									shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+										borderRadius: BorderRadius.circular(5),
+									))
+								),
+								child: Center(child: Text(text)),
+								onPressed: () async {
+									await animation.trigger();
+								},
+							),
+						);
+					},
+				),
 			),
-			child: Center(child: Text(text)),
 		);
 	}
 }
