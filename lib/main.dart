@@ -1,20 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:mimo/views/home_page.dart';
 
 void main() {
-  runApp(const MainApp());
+	runApp(const MimoApp());
 }
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+class MimoApp extends StatelessWidget {
+	const MimoApp({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
-      ),
-    );
-  }
+	@override
+	Widget build(BuildContext context) {
+		return MaterialApp(
+			debugShowCheckedModeBanner: false,
+			title: "Mimo",
+			themeMode: ThemeMode.dark,
+			darkTheme: ThemeData(
+				useMaterial3: true,
+				fontFamily: "Lexend",
+				colorScheme: ColorScheme.fromSeed(
+					seedColor: Colors.indigo,
+					brightness: Brightness.dark
+				)
+			),
+			home: const HomePage(),
+		);
+	}
 }
