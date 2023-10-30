@@ -6,8 +6,14 @@ class GenerateAnimation {
 	final AnimationController controller;
 	late double maxValue;
 	late Function trigger;
+	late Color borderColor, baseColor;
 	GenerateAnimation({
-		required this.animation, required this.controller, required this.trigger, this.maxValue = 1});
+		required this.animation,
+		required this.controller,
+		required this.trigger,
+		required this.baseColor, required this.borderColor,
+		this.maxValue = 1
+	});
 }
 
 // Generate Expand animation
@@ -39,6 +45,8 @@ GenerateAnimation generateLinearAnimation({
 		animation: anim,
 		controller: ctrl,
 		maxValue: range.last.toDouble(),
+		borderColor: Colors.white,
+		baseColor: Colors.green,
 		trigger: trigger
 	);
 }

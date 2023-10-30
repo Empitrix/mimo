@@ -8,14 +8,14 @@ class Square extends StatelessWidget {
 	final String text;
 	final GenerateAnimation animation;
 	final Color borderColor;
-	final Color selectColor;
+	final Color baseColor;
 	const Square({
 		super.key,
 		this.size = 50,
 		this.text = "",
 		required this.animation,
 		this.borderColor = Colors.red,
-		this.selectColor = Colors.red,
+		this.baseColor = Colors.red,
 	});
 
 	@override
@@ -52,7 +52,7 @@ class Square extends StatelessWidget {
 									backgroundColor: MaterialStatePropertyAll(
 										animation.controller.value == 1 ?
 										Theme.of(context).colorScheme.secondaryContainer:
-										selectColor
+										baseColor
 									),
 									shape: MaterialStatePropertyAll(RoundedRectangleBorder(
 										borderRadius: BorderRadius.circular(5),
