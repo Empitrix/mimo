@@ -9,11 +9,14 @@ class Square extends StatelessWidget {
 	final GenerateAnimation animation;
 	final Color borderColor;
 	final Color baseColor;
+	final Function? onTap;
+
 	const Square({
 		super.key,
 		this.size = 50,
 		this.text = "",
 		required this.animation,
+		this.onTap,
 		this.borderColor = Colors.red,
 		this.baseColor = Colors.red,
 	});
@@ -60,6 +63,7 @@ class Square extends StatelessWidget {
 								),
 								child: Center(child: Text(text)),
 								onPressed: () async {
+									if(onTap != null){ onTap!(); }
 									await animation.trigger();
 								},
 							),

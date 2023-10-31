@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mimo/animation/generator.dart';
 import 'package:mimo/components/square.dart';
 import 'package:mimo/database/db.dart';
+import 'package:mimo/utils/engine.dart';
 
 class HomePage extends StatefulWidget {
 	const HomePage({super.key});
@@ -12,15 +13,34 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 
-	final int genNum = 4;
+	final int genNum = 3;
 	List<GenerateAnimation> animations = [];
 	bool isLoaded = false;
 	// Scores
 	int highScore = 0;
 	int currentScore = 0;
+	List<int> selectedSquares = [];
+
+
+	Future<List<int>> waitToCollect(List<int> input) async {
+		debugPrint("[START TO LISTEN]");
+		while(true){
+			if(selectedSquares.length == input.length){
+				debugPrint("[FINISH LISTENING]");
+				break;
+			}
+			await Future.delayed(const Duration(seconds: 1));
+		}
+		return selectedSquares;
+	}
 
 	Future<void> startTheGame() async {
+		GameEngine().generate(animations, (input) async {
 
+			await waitToCollect(input);
+
+			return false;
+		});
 	}
 
 	Future<void> init() async {
@@ -31,6 +51,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 		initAnimations();  // Load animations
 		highScore = await db.getScore();
 		// await db.updateScore(69);  // Update score just in case
+
+		// Game Engine
+		startTheGame();
+
 		setState(() { isLoaded = true; });
 	}
 
@@ -104,13 +128,19 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 									for(int j = 0; j < genNum; j++) Column(
 										mainAxisAlignment: MainAxisAlignment.spaceEvenly,
 										children: [
-											Square(
-												size: 100,
-												text: "[${i + 1}, ${j + 1}]",
-												animation: animations[ (i * genNum) + j ],
-												borderColor: animations[ (i * genNum) + j ].borderColor,
-												baseColor: animations[ (i * genNum) + j ].baseColor,
-											),
+											Builder(
+												builder: (context){
+													int index = (i * genNum) + j;
+													return Square(
+														size: 100,
+														text: "[${i + 1}, ${j + 1}]",
+														animation: animations[index],
+														borderColor: animations[index].borderColor,
+														baseColor: animations[index].baseColor,
+														onTap: (){ },
+													);
+												},
+											)
 										],
 									)
 								],

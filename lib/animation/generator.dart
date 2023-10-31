@@ -35,7 +35,7 @@ GenerateAnimation generateLinearAnimation({
 	).animate(ctrl);
 	ctrl.value = initialValue;
 
-	void trigger() async {
+	void trigger({Color base = Colors.green, border = Colors.white}) async {
 		await ctrl.reverse();
 		await Future.delayed(const Duration(milliseconds: 350));
 		await ctrl.forward();
