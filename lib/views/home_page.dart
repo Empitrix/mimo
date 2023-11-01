@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mimo/animation/generator.dart';
 import 'package:mimo/components/square.dart';
+import 'package:mimo/config/public.dart';
 import 'package:mimo/database/db.dart';
 import 'package:mimo/utils/engine.dart';
 
@@ -21,15 +22,23 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 	int currentScore = 0;
 	List<int> selectedSquares = [];
 
+	bool checkInputs(List<int> a, List<int> b){
+		for(int c = 0; c < a.length; c++){
+			if(a[c] != b[c]){
+				return false;
+			}
+		}
+		return true;
+	}
 
 	Future<List<int>> waitToCollect(List<int> input) async {
-		debugPrint("[START TO LISTEN]");
+		// debugPrint("[START TO LISTEN]");
 		while(true){
 			if(selectedSquares.length == input.length){
-				debugPrint("[FINISH LISTENING]");
+				// debugPrint("[FINISH LISTENING]");
 				break;
 			}
-			await Future.delayed(const Duration(seconds: 1));
+			await Future.delayed(const Duration(milliseconds: 500));
 		}
 		return selectedSquares;
 	}
@@ -38,8 +47,24 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 		GameEngine().generate(animations, (input) async {
 
 			await waitToCollect(input);
+			bool result = checkInputs(selectedSquares, input);
+			selectedSquares = [];
+			debugPrint("[ANSWER: $result]");
+			await Future.delayed(const Duration(milliseconds: 1500));
 
-			return false;
+			if(result){
+				// Correct
+				setState(() { currentScore ++; });
+				if(currentScore > highScore){
+					setState(() { highScore = currentScore; });
+					await DB().updateScore(currentScore);
+				}
+			} else {
+				// Wrong (start again)
+				setState(() { currentScore = 0; });
+			}
+
+			return result;
 		});
 	}
 
@@ -50,7 +75,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 		await db.init();  // Initialize database (create table)
 		initAnimations();  // Load animations
 		highScore = await db.getScore();
-		// await db.updateScore(69);  // Update score just in case
+		// await db.updateScore(0);  // Update score just in case
 
 		// Game Engine
 		startTheGame();
@@ -137,7 +162,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 														animation: animations[index],
 														borderColor: animations[index].borderColor,
 														baseColor: animations[index].baseColor,
-														onTap: (){ },
+														onTap: (){
+															if(selectedSquares.length != level){
+																selectedSquares.add(index);
+															}
+														},
 													);
 												},
 											)

@@ -11,7 +11,7 @@ Future<void> updateDbPath() async {
 		(await getApplicationSupportDirectory()).absolute.path,
 		"mimo.db"
 	);
-	debugPrint("DB Path: $dbPath");
+	// debugPrint("DB Path: $dbPath");
 }
 
 
@@ -48,7 +48,7 @@ class DB {
 	Future<int> getScore() async {
 		Database db = await _createDB();
 		List<Map> result = await db.query("mimo");
-		debugPrint("Result: ${result.first}");
+		// debugPrint("Result: ${result.first}");
 		return int.parse(result.first["score"].toString());
 	}
 

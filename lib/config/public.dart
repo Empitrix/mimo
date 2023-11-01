@@ -9,3 +9,5 @@ int repetition = 10;
 
 
 bool gameIsRunning = true;
+
+bool isComputerFinished = false;
