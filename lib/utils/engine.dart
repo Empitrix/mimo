@@ -29,7 +29,7 @@ class GameEngine {
 	Future<void> generate(List<GenerateAnimation> animations, FinishFunc onFinished) async {
 
 		while(gameIsRunning){
-
+			isComputerFinished = false;
 			bool status = await onFinished(await pickSome(animations));
 
 			if(status){

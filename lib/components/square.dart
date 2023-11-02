@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:glowy_borders/glowy_borders.dart';
 import 'package:mimo/animation/generator.dart';
+import 'package:mimo/config/public.dart';
 
 
 class Square extends StatelessWidget {
@@ -63,8 +64,10 @@ class Square extends StatelessWidget {
 								),
 								child: Center(child: Text(text)),
 								onPressed: () async {
-									if(onTap != null){ onTap!(); }
-									await animation.trigger();
+									if(isComputerFinished){
+										if(onTap != null){ onTap!(); }
+										await animation.trigger();
+									}
 								},
 							),
 						);

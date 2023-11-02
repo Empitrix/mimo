@@ -45,7 +45,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 
 	Future<void> startTheGame() async {
 		GameEngine().generate(animations, (input) async {
-
+			isComputerFinished = true;  // For blocking user to don't add fast
 			await waitToCollect(input);
 			bool result = checkInputs(selectedSquares, input);
 			selectedSquares = [];
