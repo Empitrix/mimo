@@ -3,6 +3,7 @@ import 'package:mimo/animation/generator.dart';
 import 'package:mimo/components/square.dart';
 import 'package:mimo/config/public.dart';
 import 'package:mimo/database/db.dart';
+import 'package:mimo/utils/audio.dart';
 import 'package:mimo/utils/engine.dart';
 
 class HomePage extends StatefulWidget {
@@ -53,6 +54,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 			await Future.delayed(const Duration(milliseconds: 1500));
 
 			if(result){
+				await PlaySound().correct();
 				// Correct
 				setState(() { currentScore ++; });
 				if(currentScore > highScore){
@@ -61,6 +63,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 				}
 			} else {
 				// Wrong (start again)
+				await PlaySound().wrong();
 				setState(() { currentScore = 0; });
 			}
 

@@ -7,6 +7,7 @@ environment:
   sdk: '>=3.1.4 <4.0.0'
 
 dependencies:
+  audioplayers: ^5.2.0
   flutter:
     sdk: flutter
   glowy_borders: ^1.0.2
@@ -22,6 +23,10 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+  assets:
+    - assets/audio/correct.wav
+    - assets/audio/wrong.wav
 
   fonts:
     - family: Josef
