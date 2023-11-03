@@ -12,13 +12,15 @@ int randInt(int min, max){
 typedef FinishFunc = Future<bool> Function(List<int>);
 
 
-Future<List<int>> pickSome(List<GenerateAnimation> input) async {
+Future<List<int>> pickSome(List<GenerateAnimation> input, Function setState) async {
 	List<int> picked = [];
 	for(int i = 0; i < level; i++){
 		int index = randInt(0, input.length);
 		GenerateAnimation selected = input[index];
-		selected.borderColor = Colors.pink;
-		selected.baseColor = Colors.blue;
+		setState((){
+			selected.borderColor = Colors.pink;
+			selected.baseColor = Colors.blue;
+		});
 		await selected.trigger();
 		picked.add(index);
 	}
@@ -26,11 +28,14 @@ Future<List<int>> pickSome(List<GenerateAnimation> input) async {
 }
 
 class GameEngine {
-	Future<void> generate(List<GenerateAnimation> animations, FinishFunc onFinished) async {
+	Future<void> generate(
+		List<GenerateAnimation> animations, FinishFunc onFinished, Function setState) async {
 
 		while(gameIsRunning){
+
 			isComputerFinished = false;
-			bool status = await onFinished(await pickSome(animations));
+
+			bool status = await onFinished(await pickSome(animations, setState));
 
 			if(status){
 				level ++;

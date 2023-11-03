@@ -68,7 +68,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 			}
 
 			return result;
-		});
+		}, setState);
 	}
 
 	Future<void> init() async {

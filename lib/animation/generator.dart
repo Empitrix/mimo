@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 
 
+typedef TriggerFunc = Future<void> Function({Color? border, Color? base});
+
+
 class GenerateAnimation {
 	final Animation<double> animation;
 	final AnimationController controller;
 	late double maxValue;
-	late Function trigger;
+	late TriggerFunc trigger;
 	late Color borderColor, baseColor;
+
 	GenerateAnimation({
 		required this.animation,
 		required this.controller,
@@ -24,6 +28,10 @@ GenerateAnimation generateLinearAnimation({
 	List<int> durations = const [300, 300],
 
 }){
+
+	Color baseColor = Colors.green;
+	Color borderColor = Colors.white;
+
 	AnimationController ctrl = AnimationController(
 		vsync: ticket,
 		duration: Duration(milliseconds: durations.first),
@@ -35,18 +43,22 @@ GenerateAnimation generateLinearAnimation({
 	).animate(ctrl);
 	ctrl.value = initialValue;
 
-	void trigger({Color base = Colors.green, border = Colors.white}) async {
+	// Future<void> trigger({Color base = Colors.green, border = Colors.white}) async {
+	Future<void> trigger({Color? base, Color? border}) async {
+		if(base != null){baseColor = base;}
+		if(border != null){borderColor = border;}
 		await ctrl.reverse();
 		await Future.delayed(const Duration(milliseconds: 350));
 		await ctrl.forward();
 	}
 
+
 	return GenerateAnimation(
 		animation: anim,
 		controller: ctrl,
 		maxValue: range.last.toDouble(),
-		borderColor: Colors.white,
-		baseColor: Colors.green,
+		borderColor: borderColor,
+		baseColor: baseColor,
 		trigger: trigger
 	);
 }
