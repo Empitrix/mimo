@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mimo/animation/generator.dart';
 import 'package:mimo/components/square.dart';
@@ -15,7 +16,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 
-	final int genNum = 3;
+
 	List<GenerateAnimation> animations = [];
 	bool isLoaded = false;
 	// Scores
@@ -46,7 +47,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 
 	Future<void> startTheGame() async {
 		GameEngine().generate(animations, (input) async {
-			isComputerFinished = true;  // For blocking user to don't add fast
+
 			await waitToCollect(input);
 			bool result = checkInputs(selectedSquares, input);
 			selectedSquares = [];
@@ -76,7 +77,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 		setState(() { isLoaded = false; });
 		await updateDbPath();  // update database's path
 		await db.init();  // Initialize database (create table)
-		initAnimations();  // Load animations
+		initAnimations(genNum);  // Load animations
 		highScore = await db.getScore();
 		// await db.updateScore(0);  // Update score just in case
 
@@ -86,15 +87,18 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 		setState(() { isLoaded = true; });
 	}
 
-	void initAnimations() {
+	void initAnimations(int n) {
 		// Initialize animations for squares
-		animations = List<GenerateAnimation>.generate(
-			genNum*genNum, (i) => generateLinearAnimation(
-			ticket: this,
-			initialValue: 6,
-			range: {0, 6},
-			durations: [300]
-		));
+		setState(() {
+			animations = List<GenerateAnimation>.generate(
+				n*n, (i) => generateLinearAnimation(
+				ticket: this,
+				setState: setState,
+				initialValue: 6,
+				range: {0, 6},
+				durations: [300]
+			));
+		});
 	}
 
 	@override
@@ -166,9 +170,20 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 														borderColor: animations[index].borderColor,
 														baseColor: animations[index].baseColor,
 														onTap: (){
+															setState(() {
+																animations[index].borderColor = Colors.deepOrange;
+															});
 															if(selectedSquares.length != level){
 																selectedSquares.add(index);
 															}
+
+															// return TriggerColor(
+															// 	// baseColor: animations[index].borderColor,
+															// 	// borderColor: animations[index].borderColor
+															// 	// baseColor: animations[index].borderColor,
+															// 	// borderColor: Colors.yellow
+															// );
+
 														},
 													);
 												},

@@ -3,6 +3,13 @@ import 'package:glowy_borders/glowy_borders.dart';
 import 'package:mimo/animation/generator.dart';
 import 'package:mimo/config/public.dart';
 
+class TriggerColor {
+	final Color baseColor, borderColor;
+	TriggerColor({required this.baseColor, required this.borderColor});
+}
+
+typedef OnProgressTrigger = TriggerColor Function();
+
 
 class Square extends StatelessWidget {
 	final double size;
@@ -11,6 +18,7 @@ class Square extends StatelessWidget {
 	final Color borderColor;
 	final Color baseColor;
 	final Function? onTap;
+	// final OnProgressTrigger? onTap;
 
 	const Square({
 		super.key,
@@ -65,8 +73,10 @@ class Square extends StatelessWidget {
 								child: Center(child: Text(text)),
 								onPressed: () async {
 									if(isComputerFinished){
-										if(onTap != null){ onTap!(); }
+										isComputerFinished = false;
+										if(onTap != null){ await onTap!(); }
 										await animation.trigger();
+										isComputerFinished = true;
 									}
 								},
 							),

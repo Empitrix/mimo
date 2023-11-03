@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mimo/config/public.dart';
 
 
 typedef TriggerFunc = Future<void> Function({Color? border, Color? base});
@@ -24,13 +25,14 @@ class GenerateAnimation {
 GenerateAnimation generateLinearAnimation({
 	required TickerProvider ticket,
 	required double initialValue,
+	required Function setState,
 	Set<int> range = const {0, 1},
 	List<int> durations = const [300, 300],
 
 }){
 
-	Color baseColor = Colors.green;
-	Color borderColor = Colors.white;
+	Color baseColor = const Color(0xff1B1B1F);
+	Color borderColor = Colors.deepOrange;
 
 	AnimationController ctrl = AnimationController(
 		vsync: ticket,
@@ -47,6 +49,9 @@ GenerateAnimation generateLinearAnimation({
 	Future<void> trigger({Color? base, Color? border}) async {
 		if(base != null){baseColor = base;}
 		if(border != null){borderColor = border;}
+		// if(base != null){setState((){ baseColor = base; }); print("#" * 12); }
+		// if(border != null){setState((){ borderColor = border; });}
+
 		await ctrl.reverse();
 		await Future.delayed(const Duration(milliseconds: 350));
 		await ctrl.forward();

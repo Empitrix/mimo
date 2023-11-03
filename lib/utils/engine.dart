@@ -18,12 +18,16 @@ Future<List<int>> pickSome(List<GenerateAnimation> input, Function setState) asy
 		int index = randInt(0, input.length);
 		GenerateAnimation selected = input[index];
 		setState((){
-			selected.borderColor = Colors.pink;
-			selected.baseColor = Colors.blue;
+			// selected.borderColor = Colors.pink;
+			// selected.baseColor = Colors.blue;
+			selected.borderColor = const Color(0xffc3073f);
+			selected.baseColor = const Color(0xff1B1B1F);
 		});
 		await selected.trigger();
 		picked.add(index);
 	}
+
+	isComputerFinished = true;
 	return picked;
 }
 
