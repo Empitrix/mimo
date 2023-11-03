@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mimo/animation/generator.dart';
 import 'package:mimo/components/square.dart';
@@ -62,6 +61,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 					setState(() { highScore = currentScore; });
 					await DB().updateScore(currentScore);
 				}
+
 			} else {
 				// Wrong (start again)
 				await PlaySound().wrong();
@@ -91,7 +91,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 		// Initialize animations for squares
 		setState(() {
 			animations = List<GenerateAnimation>.generate(
-				n*n, (i) => generateLinearAnimation(
+				4*4, (i) => generateLinearAnimation(
 				ticket: this,
 				setState: setState,
 				initialValue: 6,

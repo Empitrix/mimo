@@ -1,5 +1,3 @@
-import 'package:flutter/cupertino.dart';
-
 String dbPath = "";
 
 int genNum = 2;  // Number of Row/Column s
@@ -10,7 +8,7 @@ int level = 1;
 
 // Number of repetition of each level
 // Max level (4) have number of infinite for repeat
-int repetition = 10;
+int repetition = 2;
 
 
 bool gameIsRunning = true;

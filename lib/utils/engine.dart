@@ -34,20 +34,33 @@ Future<List<int>> pickSome(List<GenerateAnimation> input, Function setState) asy
 class GameEngine {
 	Future<void> generate(
 		List<GenerateAnimation> animations, FinishFunc onFinished, Function setState) async {
-
 		while(gameIsRunning){
+
+			// for(int r = 0; r < repetition; r++){}  // Repetition
+
 
 			isComputerFinished = false;
 
-			bool status = await onFinished(await pickSome(animations, setState));
+			bool status = await onFinished(
+				await pickSome(
+					List<GenerateAnimation>.from(animations.getRange(0, genNum*genNum)),
+					setState));
 
+			// Level Gen
 			if(status){
 				level ++;
 			} else {
 				level = 1;
 			}
 
-		}
+			// Grid Gen
+			if(level >= 5){
+				genNum = 3;
+			} else {
+				genNum = 2;
+			}
 
+
+		}  // While
 	}
 }
