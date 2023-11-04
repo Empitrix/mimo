@@ -8,7 +8,7 @@ int level = 1;
 
 // Number of repetition of each level
 // Max level (4) have number of infinite for repeat
-int repetition = 2;
+// int repetition = 2;
 
 
 bool gameIsRunning = true;

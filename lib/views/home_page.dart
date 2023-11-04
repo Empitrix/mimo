@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mimo/animation/generator.dart';
 import 'package:mimo/components/square.dart';
@@ -47,10 +48,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 	Future<void> startTheGame() async {
 		GameEngine().generate(animations, (input) async {
 
+			// Wait until user input all
 			await waitToCollect(input);
+
 			bool result = checkInputs(selectedSquares, input);
 			selectedSquares = [];
-			debugPrint("[ANSWER: $result]");
+			debugPrint("[ANSWER: ${result ? "Correct" : "Wrong"}]");
 			await Future.delayed(const Duration(milliseconds: 1500));
 
 			if(result){
@@ -80,10 +83,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 		initAnimations(genNum);  // Load animations
 		highScore = await db.getScore();
 		// await db.updateScore(0);  // Update score just in case
-
 		// Game Engine
 		startTheGame();
-
 		setState(() { isLoaded = true; });
 	}
 
@@ -113,7 +114,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 			onWillPop: () async { return false; },
 			child: Scaffold(
 				appBar: AppBar(
-					title: const Text("MIMO"),
+					title: Text(
+						"MIMO",
+						style: Theme.of(context).primaryTextTheme.headlineLarge!.copyWith(
+							fontWeight: FontWeight.bold,
+						)
+					),
 					actions: [
 						Container(
 							margin: const EdgeInsets.only(right: 20),
@@ -139,8 +145,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 										TextSpan(
 											text: highScore.toString(),
 											style: const TextStyle(
-												fontFamily: "Josef",
-												fontSize: 20,
+												fontFamily: "Orbitron",
+												fontSize: 18,
 												fontStyle: FontStyle.italic
 											),
 										),
@@ -165,7 +171,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 													int index = (i * genNum) + j;
 													return Square(
 														size: 100,
-														text: "[${i + 1}, ${j + 1}]",
+														text: kDebugMode ? "[${i + 1}, ${j + 1}]" : "",
 														animation: animations[index],
 														borderColor: animations[index].borderColor,
 														baseColor: animations[index].baseColor,

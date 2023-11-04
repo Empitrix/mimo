@@ -54,7 +54,7 @@ class GameEngine {
 			}
 
 			// Grid Gen
-			if(level >= 5){
+			if(level >= 6){
 				genNum = 3;
 			} else {
 				genNum = 2;

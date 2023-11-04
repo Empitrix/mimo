@@ -12,11 +12,11 @@ class MimoApp extends StatelessWidget {
 	Widget build(BuildContext context) {
 		return MaterialApp(
 			debugShowCheckedModeBanner: false,
-			title: "Mimo",
+			title: "MIMO",
 			themeMode: ThemeMode.dark,
 			darkTheme: ThemeData(
 				useMaterial3: true,
-				fontFamily: "Lexend",
+				fontFamily: "Orbitron",
 				colorScheme: ColorScheme.fromSeed(
 					seedColor: Colors.indigo,
 					brightness: Brightness.dark
