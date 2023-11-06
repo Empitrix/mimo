@@ -1,6 +1,6 @@
 <div align="center">
     <img src="./assets/icon/icon.png" width="128" height="128" style="display: block; margin: 0 auto; background-color: #0D1117"/>
-    <h1>MOSFET</h1>
+    <h1>MIMO</h1>
     <p>A Memory Game</p>
 </div>
 
